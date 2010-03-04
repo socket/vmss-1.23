@@ -9,6 +9,7 @@
 
 #include "lab.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -27,6 +28,13 @@ void vmss_strrev(char *h) {
     *t = *h ^ *t,
     *h = *h ^ *t;
   }
+}
+
+char* vmss_strend(char* str) {
+  while (*str) {
+    str++;
+  }
+  return str;
 }
 
 int vmss_char2digit(char ch) {
@@ -72,32 +80,20 @@ int vmss_convert2int(const char *src, int base, unsigned int *output) {
   return 0;
 }
 
-int vmss_convert2str(unsigned int value, int base, char* output) {
+int vmss_convert2str(unsigned int value, int base, char *output) {
   char* pstr = output;
-  while (value > 0) {
+  do {
     int remainder = value % base;
     value /= base;
     *pstr++ = vmss_digit2char(remainder);
   }
-  *pstr = '\0';;
+  while (value > 0);
+  
+  *pstr = '\0';
   vmss_strrev(output);
   
   return 0;
 }
-
-/*void fract2hex(int input, char* buffer) {
- char b2[256];
- int2hex(input, b2);
- for (int i=0; i<strlen(b2); ++i ) {
- int src_rank = v_rank(input);
- input *= 0x10;
- int digit = input / pow10(src_rank);
- input %= pow10(src_rank);
- *buffer++ = alph[digit];
- }
- *buffer = 0;
- }
-*/ 
 
 int vmss_rank10(unsigned int val) {
   int rank = 0;
@@ -106,8 +102,8 @@ int vmss_rank10(unsigned int val) {
 }
 
 int vmss_fractal2str(unsigned int fractal, int base, char* output, char limit) {
+  int srcrank = vmss_rank10(fractal);
   for (int i=0; i<limit, fractal > 0; ++i) {
-    int srcrank = vmss_rank10(fractal);
     int pow10 = pow(10, srcrank);
     fractal *= base;
     int digit = fractal / pow10;
@@ -118,15 +114,40 @@ int vmss_fractal2str(unsigned int fractal, int base, char* output, char limit) {
   return 0;
 }
 
+int vmss_str2number(char *src, int src_base, int dst_base, char* output, char limit) {
+  char *left, *right;
+  unsigned int src_value, src_fractal;
+  int result = 0;
+  left = right = src;
+  while(*right && *right != '.') right++;
+  *right++ = '\0';
+  
+  result |= vmss_convert2int(left, src_base, &src_value);
+  result |= vmss_convert2int(right, src_base, &src_fractal);
+  
+  if ( result != 0 ) {
+    return -1;
+  }
+  
+  vmss_convert2str(src_value, dst_base, output);
+  output = vmss_strend( output );
+  *output++ = '.';
+  vmss_fractal2str(src_fractal, dst_base, output, limit);
+  
+  return 0;
+}
+
 //43981
 int main (int argc, const char * argv[]) {
 	int error;
   //printf("%d\n", vmss_convert2int("1230", 4, &error));
   
 	// insert code here...
-  char buffer[32];
-  vmss_convert2str(0xabcdef, 0x10, buffer);
-  vmss_fractal2str(25, 8, buffer, 5);
+  char src[256];
+  char buffer[256];
+  
+  strcpy(src, "10.50390625");
+  vmss_str2number(src, 10, 16, buffer, 8);
   
 	printf("%s", buffer);
   
