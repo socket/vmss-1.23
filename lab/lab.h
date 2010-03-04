@@ -7,16 +7,3 @@
  *
  */
 
-#include <stdio.h>
-
-// 23.	из четверичной в шестнадцатеричную
-
-
-
-int main (int argc, const char * argv[]) {
-	
-	
-	// insert code here...
-	printf("Hello, World!\n");
-	return 0;
-}
