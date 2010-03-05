@@ -33,4 +33,5 @@ typedef int BOOL;
 #define BUFF_SIZE 256
 #define PRECISION 8
 
+#define FAILED(x) ((-1) == x)
 #endif //_vmss_common_h

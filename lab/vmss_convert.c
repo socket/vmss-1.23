@@ -52,7 +52,7 @@ int vmss_rank10(unsigned int val) {
 
 int vmss_fractal2str(unsigned int fractal, int base, char* output, char limit) {
   int srcrank = vmss_rank10(fractal);
-  for (int i=0; i<limit, fractal > 0; ++i) {
+  for (int i=0; i<limit && fractal > 0; ++i) {
     int pow10 = pow(10, srcrank);
     fractal *= base;
     int digit = fractal / pow10;
