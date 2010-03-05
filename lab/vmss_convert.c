@@ -67,6 +67,11 @@ int vmss_str2number(char *src, int src_base, int dst_base, char* output, char li
   char *left, *right;
   unsigned int src_value, src_fractal;
   int result = 0;
+  
+  if ( *src == '-' ) {
+    *output++ = *src++;
+  }
+  
   left = right = src;
   while(*right && *right != '.') right++;
   *right++ = '\0';
