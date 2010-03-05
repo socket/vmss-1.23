@@ -31,7 +31,9 @@ int main (int argc, const char * argv[]) {
     printf("error: cannot open '%s' for reading\n", src_file);
     return -1;
   }
-  hfile_dst = fopen( src_file, "wt" );
+  if ( dst_file ) {
+    hfile_dst = fopen( dst_file, "wt" );
+  }
   
   prbuff = rbuff;
   while (prbuff = fgets(rbuff, sizeof(rbuff), hfile)) {
