@@ -1,64 +1,13 @@
 /*
- *  lab.c
+ *  vmss_convert.c
  *  lab
  *
- *  Created by Alexey Streltsow on 3/4/10.
+ *  Created by Alexey Streltsow on 3/5/10.
  *  Copyright 2010 Zila Networks LLC. All rights reserved.
  *
  */
 
-#include "lab.h"
-
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-
-typedef int BOOL;
-
-#define TRUE 1
-#define FALSE 0 
-
-// 23.	из четверичной в шестнадцатеричную
-
-void vmss_strrev(char *h) {
-  char *t = h;
-  while(t && *t) ++t;
-  for(--t; h < t; ++h, --t) {
-    *h = *h ^ *t,
-    *t = *h ^ *t,
-    *h = *h ^ *t;
-  }
-}
-
-char* vmss_strend(char* str) {
-  while (*str) {
-    str++;
-  }
-  return str;
-}
-
-int vmss_char2digit(char ch) {
-  if ( ch >= '0' && ch <= '9' ) {
-    return ch - '0';
-  }
-  if ( ch >= 'a' && ch <= 'z' ) {
-    return 10 + (ch - 'a');
-  }
-  if ( ch >= 'A' && ch <= 'Z' ) {
-    return 10 + (ch - 'A');
-  }
-  return -1;
-};
-
-char vmss_digit2char(int digit) {
-  if ( digit >= 0 && digit <= 9 ) {
-    return '0' + digit;
-  }
-  else if ( digit <= ('Z'-'A') ) {
-    return 'A' + (digit - 10);
-  }
-  return '?';
-}
+#include "vmss_common.h"
 
 int vmss_convert2int(const char *src, int base, unsigned int *output) {
   int i = 0;
@@ -135,21 +84,4 @@ int vmss_str2number(char *src, int src_base, int dst_base, char* output, char li
   vmss_fractal2str(src_fractal, dst_base, output, limit);
   
   return 0;
-}
-
-//43981
-int main (int argc, const char * argv[]) {
-	int error;
-  //printf("%d\n", vmss_convert2int("1230", 4, &error));
-  
-	// insert code here...
-  char src[256];
-  char buffer[256];
-  
-  strcpy(src, "10.50390625");
-  vmss_str2number(src, 10, 16, buffer, 8);
-  
-	printf("%s", buffer);
-  
-	return 0;
 }
