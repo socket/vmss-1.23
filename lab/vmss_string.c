@@ -9,6 +9,16 @@
 
 #include "vmss_string.h"
 
+void vmss_strchop(char *str) {
+  while (*str) {
+    if ('\n' == *str || '\r' == *str) {
+      *str = '\0';
+      return;
+    }
+    str++;
+  }
+}
+
 void vmss_strrev(char *h) {
   char *t = h;
   while(t && *t) ++t;

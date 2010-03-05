@@ -10,9 +10,10 @@
 #ifndef _vmss_string_h
 #define _vmss_string_h
 
-void vmss_strrev(char *h);
-char* vmss_strend(char* str);
-int vmss_char2digit(char ch);
-char vmss_digit2char(int digit);
+void    vmss_strchop(char *str);
+void    vmss_strrev(char *h);
+char*   vmss_strend(char* str);
+int     vmss_char2digit(char ch);
+char    vmss_digit2char(int digit);
 
 #endif

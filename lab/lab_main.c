@@ -9,21 +9,44 @@
 
 #include "vmss_common.h"
 
-// 23.	из четверичной в шестнадцатеричную
-
-//43981
 int main (int argc, const char * argv[]) {
-	int error;
-  //printf("%d\n", vmss_convert2int("1230", 4, &error));
+	char rbuff[BUFF_SIZE], *prbuff;
+  char convbuff[BUFF_SIZE];
+  const char *src_file = 0, *dst_file = 0;
+  FILE *hfile, *hfile_dst;
   
-	// insert code here...
-  char src[256];
-  char buffer[256];
+  printf("VMSS Lab1.%d\nConversion from base %d to %d\n\n", LAB_ID, SRC_BASE, DST_BASE);
   
-  strcpy(src, "10.50390625");
-  vmss_str2number(src, 10, 16, buffer, 8);
+  if ( argc < 2 ) {
+    printf("usage: lab <input-file> [<output-file>]\n");
+    return -1;
+  }
+  if ( argc < 3 ) {
+    dst_file = argv[2];
+  }
+
+  src_file = argv[1];
+  hfile = fopen( src_file, "rt" );
+  if ( ! hfile ) {
+    printf("error: cannot open '%s' for reading\n", src_file);
+    return -1;
+  }
+  hfile_dst = fopen( src_file, "wt" );
   
-	printf("%s", buffer);
+  prbuff = rbuff;
+  while (prbuff = fgets(rbuff, sizeof(rbuff), hfile)) {
+    vmss_strchop(prbuff);
+    if ( '\0' != *prbuff ) {
+      vmss_str2number(prbuff, SRC_BASE, DST_BASE, convbuff, PRECISION);
+      fprintf(hfile_dst, "%s\n", convbuff);
+    }
+  }
   
-	return 0;
+  fclose(hfile);
+  if ( hfile_dst != 0 && hfile_dst != stdin) {
+    fclose(hfile_dst);
+  }
+  
+  printf("\ndone.\n");
+  return 0;
 }

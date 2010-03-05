@@ -22,4 +22,15 @@ typedef int BOOL;
 #define TRUE 1
 #define FALSE 0 
 
+#define LAB_ID 23
+
+// source base
+#define SRC_BASE 4
+
+// target base
+#define DST_BASE 16
+
+#define BUFF_SIZE 256
+#define PRECISION 8
+
 #endif //_vmss_common_h
